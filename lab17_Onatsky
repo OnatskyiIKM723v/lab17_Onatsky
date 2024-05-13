@@ -1,0 +1,65 @@
+#include <iostream>
+
+class Time 
+{
+protected:
+    int hour;
+    int minute;
+    int second;
+
+public:
+    Time(int h = 0, int m = 0, int s = 0) : hour(h), minute(m), second(s) {}
+
+    void setTime(int h, int m, int s) 
+    {
+        if (h >= 0 && h < 24 && m >= 0 && m < 60 && s >= 0 && s < 60) 
+        {
+            hour = h;
+            minute = m;
+            second = s;
+        }
+        else 
+        {
+            std::cout << "invalid time input!\n";
+        }
+    }
+
+    void displayTime() const 
+    {
+        std::cout << "Time: " << hour << ":" << minute << ":" << second << std::endl;
+    }
+};
+
+class AdjustableTime : public Time 
+{
+public:
+    AdjustableTime(int h = 0, int m = 0, int s = 0) : Time(h, m, s) {}
+
+    void adjustTime(int h, int m, int s) 
+    {
+        hour = (hour + h) % 24;
+        minute = (minute + m) % 60;
+        second = (second + s) % 60;
+    }
+};
+
+int main() 
+{
+    setlocale(LC_CTYPE, "ukr"); // дозволити використання української мови
+
+    // встановлення початкового часу
+    AdjustableTime myTime(4, 52, 16);
+
+    // відображення початкового часу
+    std::cout << "початковий час: ";
+    myTime.displayTime();
+
+    // зміна часу на задану кількість годин, хвилин та секунд
+    myTime.adjustTime(6, 19, 36);
+
+    // відображення зміненого часу
+    std::cout << "змінений час: ";
+    myTime.displayTime();
+
+    return 0;
+}
